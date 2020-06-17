@@ -31,18 +31,18 @@ def get_date():
                 "data": [],
             }
             return jsonify(data1)
-        sql = "select * from anqing_xiaofang_copy1 where release_time between %s and %s order by release_time desc limit %s,%s"
+        sql = "select * from anqing_xiaofang_a where release_time between %s and %s order by release_time desc limit %s,%s"
         cur.execute(sql, (start_time,end_time,(int(page) - 1) * 7, int(size)))
         data = cur.fetchall()
-        sql = "select count(1) as co from anqing_xiaofang_copy1 where release_time between %s and %s order by release_time desc"
+        sql = "select count(1) as co from anqing_xiaofang_a where release_time between %s and %s order by release_time desc"
         cur.execute(sql, (start_time, end_time,))
         count1 = cur.fetchone()["co"]
         # count1 = len(data)
     else:
-        sql = "select * from anqing_xiaofang_copy1 order by release_time desc limit %s,%s"
+        sql = "select * from anqing_xiaofang_a order by release_time desc limit %s,%s"
         cur.execute(sql, ((int(page) - 1) * 7, int(size)))
         data = cur.fetchall()
-        sql = "select count(1) as co from anqing_xiaofang_copy1"
+        sql = "select count(1) as co from anqing_xiaofang_a"
         cur.execute(sql)
         count1 = cur.fetchone()["co"]
     # cur.execute(sql,((int(page)-1)*7,int(size)))
