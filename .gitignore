@@ -1,0 +1,17 @@
+#venv
+/venv/
+
+#test
+/test/
+
+#log
+/log/
+
+#conf
+/conf/
+
+#.idea
+/.idea/
+
+#__pycache__
+/__pycache__/
