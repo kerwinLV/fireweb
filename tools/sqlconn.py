@@ -5,14 +5,15 @@
 import pymysql
 from DBUtils.PooledDB import PooledDB
 
-
-pool = PooledDB(pymysql, 10,
-                host='localhost',
-                port=3306,
-                user='root',
-                passwd='123456',
-                db='fire',
-                charset='utf8',
-cursorclass = pymysql.cursors.DictCursor
-)
+def get_pool():
+    pool = PooledDB(pymysql, 10,
+                    host='localhost',
+                    port=3306,
+                    user='root',
+                    passwd='123456',
+                    db='fire',
+                    charset='utf8',
+                    cursorclass = pymysql.cursors.DictCursor
+    )
+    return pool
 

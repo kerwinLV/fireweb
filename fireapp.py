@@ -4,7 +4,7 @@
 # @File    : fireapp.py
 
 from flask import Flask,request,jsonify
-from tools.sqlconn import pool
+from tools.sqlconn import get_pool
 from tools.args_tools import get_args
 from tools.localcgstamp import localcgst
 
@@ -17,7 +17,7 @@ def get_date():
     size = get_args("size",7)
     start_time =get_args("start_time","")
     end_time = get_args("end_time","")
-    conn = pool.connection()
+    conn = get_pool().connection()
     cur = conn.cursor()
     # request.json.get("page")
     if start_time and end_time:
