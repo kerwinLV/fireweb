@@ -19,7 +19,7 @@
 /.vscode/
 
 *.pyc
-
+*.cpython-36.pyc
 
 instance/
 
