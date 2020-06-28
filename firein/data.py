@@ -9,7 +9,7 @@ from tools.sqlconn import get_pool
 from tools.args_tools import get_args
 from tools.localcgstamp import localcgst
 
-
+pool = get_pool()
 databp = Blueprint('data',__name__)
 
 @databp.route('/get_fire_date', methods=('GET',))
@@ -18,7 +18,7 @@ def get_date():
     size = get_args("size",7)
     start_time =get_args("start_time","")
     end_time = get_args("end_time","")
-    conn = get_pool().connection()
+    conn = pool.connection()
     cur = conn.cursor()
     # request.json.get("page")
     if start_time and end_time:
