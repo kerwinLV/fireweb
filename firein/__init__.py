@@ -13,7 +13,7 @@ def create_app():
     # create and configure the app
     app = Flask(__name__)
     # app = db.init_app(app)
-    #111111111
+
     from .data import databp
     app.register_blueprint(databp,url_prefix='/databp')
     return app
