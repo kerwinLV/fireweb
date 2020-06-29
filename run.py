@@ -7,7 +7,8 @@ path1 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(path1)
 
 from firein import create_app
-app = create_app()
+
 
 if __name__=="__main__":
+    app = create_app()
     app.run()
