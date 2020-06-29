@@ -24,7 +24,7 @@ def create_app():
                    "trigger": "cron",  # 触发器
                    "hour":"11",
                    "minute": "20",  # 时间间隔
-                   "args": "11"},]
+                   "args": ("11",)}]
          }
     )
     scheduler.init_app(app)
