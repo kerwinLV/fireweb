@@ -3,9 +3,9 @@
 # @Author  : kerwin
 # @File    : updatedata.py
 import time
-from tools.sqlconn import pool
+from tools.sqlconn import get_pool
 
-conn = pool.connection()
+conn = get_pool().connection()
 cur = conn.cursor()
 sql = "select * from anqing_xiaofang_copy1"
 cur.execute(sql)
