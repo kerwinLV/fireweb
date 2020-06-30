@@ -10,3 +10,13 @@ def get_args(args1,default):
         args2 = default
 
     return args2
+
+
+def get_json(args1,default):
+    print(request.json)
+    if args1 in request.json:
+        args2 = request.json.get(args1)
+    else:
+        args2 = default
+
+    return args2
