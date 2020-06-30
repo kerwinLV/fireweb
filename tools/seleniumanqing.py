@@ -15,7 +15,7 @@ path1 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(path1)
 from tools.sqlconn import get_pool
 
-
+pool = get_pool()
 class COOKIE(object):
     url = 'https://passport.weibo.cn/signin/login?entry=mweibo&r=https%3A%2F%2Fweibo.cn%2F&backTitle=%CE%A2%B2%A9&vt='
 
@@ -52,7 +52,7 @@ class COOKIE(object):
         return cookiestr
 
 
-def get_msnage(cookiestr, url1):
+def get_msnage(cookiestr, url1,keyword):
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36",
         "Cookie": cookiestr,
@@ -96,18 +96,18 @@ def get_msnage(cookiestr, url1):
         storage_time = int(time.time())
         # print(ct)
         # print(nikename)
-        save_sql(msg, nikename, wherefrom, release_time, storage_time)
+        save_sql(msg, nikename, wherefrom, release_time, storage_time,keyword)
 
 
-def save_sql(text, img, nikename, wherefrom, t_time):
-    conn = get_pool().connection()
+def save_sql(text, img, nikename, wherefrom, t_time,keyword):
+    conn = pool.connection()
     cur = conn.cursor()
     sql = 'select * from anqing_xiaofang_a where context=%s'
     cur.execute(sql, (text))
     data1 = cur.fetchone()
     if not data1:
-        sql = 'insert into anqing_xiaofang_a (context,nikename,wherefrom,release_time,storage_time) values (%s,%s,%s,%s,%s)'
-        cur.execute(sql, (text, img, nikename, wherefrom, t_time))
+        sql = 'insert into anqing_xiaofang_a (context,nikename,wherefrom,release_time,storage_time,keyword) values (%s,%s,%s,%s,%s,%s)'
+        cur.execute(sql, (text, img, nikename, wherefrom, t_time,keyword))
         conn.commit()
         print("写入成功")
     else:
@@ -116,10 +116,20 @@ def save_sql(text, img, nikename, wherefrom, t_time):
     conn.close()
 
 def get_sourecfrom(id):
-    conn = get_pool().connection()
+    conn = pool.connection()
     cur = conn.cursor()
     sql = 'select * from sourcefrom where timesetid=%s'
     cur.execute(sql,(id,))
+    data = cur.fetchall()
+    cur.close()
+    conn.close()
+    return data
+
+def get_keyword():
+    conn = pool.connection()
+    cur = conn.cursor()
+    sql = 'select * from keyword'
+    cur.execute(sql)
     data = cur.fetchall()
     cur.close()
     conn.close()
@@ -132,17 +142,19 @@ def main(id="1"):
     co = COOKIE()
     # co.getcookie()
     sourecfrom = get_sourecfrom(id)
+    keyword = get_keyword()
     # print(sourecfrom)
     cookiestr = co.getcookie()
 
     for sf in sourecfrom:
-        url1 = "https://weibo.cn/search/mblog?hideSearchFrame=&keyword=%E7%81%AB%E7%81%BE&advancedfilter=1&nick={}&endtime=20200616&sort=time&page={}"
-        for i in range(1, 3):
-            print(i)
-            url2 = url1.format(sf["nickname"],i)
-            print(url2)
-            get_msnage(cookiestr, url2)
-            time.sleep(3)
+        for kw in keyword:
+            url1 = "https://weibo.cn/search/mblog?hideSearchFrame=&keyword={}&advancedfilter=1&nick={}&endtime=20200616&sort=time&page={}"
+            for i in range(1, 3):
+                print(i)
+                url2 = url1.format(kw["keyword"],sf["nickname"],i)
+                print(url2)
+                get_msnage(cookiestr, url2,kw["keyword"])
+                time.sleep(5)
 
 
     # print(re1.text.encode("gbk","ignore").decode("gbk","ignore"))

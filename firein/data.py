@@ -134,3 +134,97 @@ def post_modify_sourcefrom():
     }
     return jsonify(data1)
 
+
+
+#返回数据来源关键字 参数sourcefrom_id  timeset_id
+@databp.route('/get_keyword',methods = ('GET',))
+def get_keyword():
+    conn = pool.connection()
+    cur = conn.cursor()
+    sql = "select * from keyword"
+    cur.execute(sql)
+    data = cur.fetchall()
+    cur.close()
+    conn.close()
+    data1 = {
+        "code": "200",
+        "msg": "success",
+        "data": data
+    }
+    return jsonify(data1)
+
+
+#修改数据来源关键字 参数 id  keyword
+@databp.route('/post_modify_keyword',methods=('POST',))
+def post_modify_keyword():
+    id = get_json("id", "")
+    keyword = get_json("keyword", "")
+    print(id)
+    if not id or not keyword:
+        data1 = {
+            "code": "00000002",
+            "msg": "缺少参数",
+            "data": ""
+        }
+        return jsonify(data1)
+    conn = pool.connection()
+    cur = conn.cursor()
+    sql = "select * from keyword where keyword=%s"
+    cur.execute(sql, (keyword))
+    data = cur.fetchone()
+    if data:
+        data1 = {
+            "code": "00000002",
+            "msg": "关键字已存在",
+            "data": ""
+        }
+        return jsonify(data1)
+    sql = "update keyword set keyword=%s where id=%s"
+    cur.execute(sql,(keyword,id))
+    conn.commit()
+    cur.close()
+    conn.close()
+    data1 = {
+        "code": "200",
+        "msg": "success",
+        "data": ""
+    }
+    return jsonify(data1)
+
+
+#添加数据来源关键字 参数  keyword
+@databp.route('/post_add_keyword',methods = ('POST',))
+def post_add_keyword():
+    keyword = get_json("keyword", "")
+    # print(id)
+    if not keyword:
+        data1 = {
+            "code": "00000002",
+            "msg": "缺少参数",
+            "data": ""
+        }
+        return jsonify(data1)
+    conn = pool.connection()
+    cur = conn.cursor()
+    sql = "select * from keyword where keyword=%s"
+    cur.execute(sql, (keyword))
+    data = cur.fetchone()
+    if data:
+        data1 = {
+            "code": "00000002",
+            "msg": "关键字已存在",
+            "data": ""
+        }
+        return jsonify(data1)
+    sql = "insert into keyword (keyword) values (%s)"
+    cur.execute(sql,(keyword))
+    conn.commit()
+    cur.close()
+    conn.close()
+    data1 = {
+        "code": "200",
+        "msg": "success",
+        "data": ""
+    }
+    return jsonify(data1)
+
