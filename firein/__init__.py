@@ -21,6 +21,17 @@ def create_app():
     zeroToday = now - datetime.timedelta(hours=now.hour, minutes=now.minute, seconds=now.second,
                                          microseconds=now.microsecond)
 
+    app.config.update(
+        {"SCHEDULER_API_ENABLED": True,
+         "JOBS": [{"id": "1",  # 任务ID
+                   "func": "firein.scheduled_tasks:aps_test",  # 任务位置
+                   "trigger": "cron",  # 触发器
+                   "hour": "14",
+                   "minute": "08",  # 时间间隔
+                   "args": ("1",)}
+                  ]
+         }
+    )
     # app.config.update(
     #     {"SCHEDULER_API_ENABLED": True,
     #      "JOBS": get_joblist()
