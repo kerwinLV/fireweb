@@ -63,7 +63,9 @@ def get_msnage(cookiestr, url1,keyword):
     context = etem.xpath('//div[starts-with(@id, "M_")]')
     # print(context)
     for con in context:
-        msg = con.xpath('string(./div/span[@class="ctt"])').replace(":", "")
+        msg = con.xpath('string(./div[1])')
+        if "赞" in msg:
+            msg = msg.split("赞")[0]
         ct = con.xpath('string(./div/span[@class="ct"])')
         ct = ct.encode("gbk", "ignore").decode("gbk", "ignore")
         if "前" in ct:
