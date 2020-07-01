@@ -151,8 +151,8 @@ def main(id="1"):
     for sf in sourecfrom:
         for kw in keyword:
             url1 = "https://weibo.cn/search/mblog?hideSearchFrame=&keyword={}&advancedfilter=1&nick={}&endtime=20200616&sort=time&page={}"
-            # for i in range(1, 3):
-            for i in range(1, 100):
+            for i in range(1, 3):
+            # for i in range(1, 100):
                 print(i)
                 url2 = url1.format(kw["keyword"],sf["nickname"],i)
                 print(url2)
