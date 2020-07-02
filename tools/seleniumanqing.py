@@ -94,6 +94,7 @@ def get_msnage(cookiestr, url1,keyword):
             ct = int(time.mktime(time.strptime(ct, '%Y-%m-%d %H:%M:%S')))
         release_time = ct
         # msg = re.sub(r"[%s]+" % punctuation, "", msg.decode("utf-8"))
+        msg = msg.encode("gbk", "ignore").decode("gbk", "ignore")
         # print(msg.encode("gbk","ignore").decode("gbk","ignore"))
         storage_time = int(time.time())
         # print(ct)
