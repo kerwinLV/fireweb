@@ -74,7 +74,7 @@ def get_msnage(cookiestr, url1,keyword):
             ct = (d1 - datetime.timedelta(minutes=minute1)).strftime("%Y-%m-%d %H:%M:%S")
             # print(d3)
         ct = ct.split("来自")[0]
-        print(ct)
+        # print(ct)
         if "年" not in ct and "-" not in ct and "今" not in ct:
             year1 = datetime.datetime.now().year
             ct = (str(year1) + "年" + ct).replace("年", "-").replace("月", "-").replace("日", "")
@@ -112,9 +112,10 @@ def save_sql(text, img, nikename, wherefrom, t_time,keyword):
         sql = 'insert into anqing_xiaofang_a (context,nikename,wherefrom,release_time,storage_time,keyword) values (%s,%s,%s,%s,%s,%s)'
         cur.execute(sql, (text, img, nikename, wherefrom, t_time,keyword))
         conn.commit()
-        print("写入成功")
+        # print("写入成功")
     else:
-        print("buxieru")
+        pass
+        # print("buxieru")
     cur.close()
     conn.close()
 
@@ -154,7 +155,7 @@ def main(id="1"):
             url1 = "https://weibo.cn/search/mblog?hideSearchFrame=&keyword={}&advancedfilter=1&nick={}&endtime=20200616&sort=time&page={}"
             for i in range(1, 3):
             # for i in range(1, 100):
-                print(i)
+            #     print(i)
                 url2 = url1.format(kw["keyword"],sf["nickname"],i)
                 print(url2)
                 get_msnage(cookiestr, url2,kw["keyword"])
