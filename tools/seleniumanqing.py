@@ -69,7 +69,7 @@ def get_msnage(cookiestr, url1,keyword):
         ct = con.xpath('string(./div/span[@class="ct"])')
         ct = ct.encode("gbk", "ignore").decode("gbk", "ignore")
         if "前" in ct:
-            minute1 = ct.split("来自")[0].split("分钟前")[0]
+            minute1 = int(ct.split("来自")[0].split("分钟前")[0])
             d1 = datetime.datetime.now()
             ct = (d1 - datetime.timedelta(minutes=minute1)).strftime("%Y-%m-%d %H:%M:%S")
             # print(d3)
