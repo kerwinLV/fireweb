@@ -10,7 +10,9 @@ from selenium import webdriver
 from lxml import etree
 import requests
 import os, sys
+import urllib3
 
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 path1 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(path1)
 from tools.sqlconn import get_pool
