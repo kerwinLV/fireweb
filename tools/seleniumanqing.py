@@ -102,7 +102,7 @@ def get_msnage(cookiestr, url1,keyword):
         save_sql(msg, nikename, wherefrom, release_time, storage_time,keyword)
 
 
-def save_sql(text, img, nikename, wherefrom, t_time,keyword):
+def save_sql(text, nikename, wherefrom,release_time, t_time,keyword):
     conn = pool.connection()
     cur = conn.cursor()
     sql = 'select * from anqing_xiaofang_a where context=%s'
@@ -110,7 +110,7 @@ def save_sql(text, img, nikename, wherefrom, t_time,keyword):
     data1 = cur.fetchone()
     if not data1:
         sql = 'insert into anqing_xiaofang_a (context,nikename,wherefrom,release_time,storage_time,keyword) values (%s,%s,%s,%s,%s,%s)'
-        cur.execute(sql, (text, img, nikename, wherefrom, t_time,keyword))
+        cur.execute(sql, (text, nikename, wherefrom,release_time, t_time,keyword))
         conn.commit()
         # print("写入成功")
     else:
