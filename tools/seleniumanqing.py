@@ -57,7 +57,7 @@ def get_msnage(cookiestr, url1,keyword):
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36",
         "Cookie": cookiestr,
     }
-    re1 = requests.get(url1, headers=headers)
+    re1 = requests.get(url1, headers=headers, verify=False)
     # re1.encoding = "utf-8"
     etem = etree.HTML(re1.text.replace('<?xml version="1.0" encoding="UTF-8"?>', ''))
     context = etem.xpath('//div[starts-with(@id, "M_")]')
