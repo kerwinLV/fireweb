@@ -10,12 +10,15 @@ from selenium import webdriver
 from lxml import etree
 import requests
 import os, sys
-import urllib3
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+# requests.packages.urllib3.disable_warnings
+# urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 path1 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(path1)
 from tools.sqlconn import get_pool
+
+cert = 'cacert.pem'
 
 pool = get_pool()
 class COOKIE(object):
@@ -58,8 +61,15 @@ def get_msnage(cookiestr, url1,keyword):
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36",
         "Cookie": cookiestr,
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3',
+        'Accept-Encoding': 'gzip, deflate',
+        'Referer': 'http://www.baidu.com',
+        'Connection': 'keep-alive',
+        'Cache-Control': 'max-age=0',
+        'Host': None
     }
-    re1 = requests.get(url1, headers=headers, verify=False)
+    re1 = requests.get(url1, headers=headers,verify=cert)
     # re1.encoding = "utf-8"
     etem = etree.HTML(re1.text.replace('<?xml version="1.0" encoding="UTF-8"?>', ''))
     context = etem.xpath('//div[starts-with(@id, "M_")]')
@@ -121,11 +131,11 @@ def save_sql(text, nikename, wherefrom,release_time, t_time,keyword):
     cur.close()
     conn.close()
 
-def get_sourecfrom(id):
+def get_sourecfrom(platformtypeid):
     conn = pool.connection()
     cur = conn.cursor()
-    sql = 'select * from sourcefrom where timesetid=%s'
-    cur.execute(sql,(id,))
+    sql = 'select * from sourcefrom where platformtypeid=%s'
+    cur.execute(sql,(platformtypeid,))
     data = cur.fetchall()
     cur.close()
     conn.close()
@@ -143,11 +153,11 @@ def get_keyword():
 
 
 # if __name__ == "__main__":
-def main(id="1"):
+def main(platformtypeid="1"):
     print(datetime.datetime.now())
     co = COOKIE()
     # co.getcookie()
-    sourecfrom = get_sourecfrom(id)
+    sourecfrom = get_sourecfrom(platformtypeid)
     keyword = get_keyword()
     # print(sourecfrom)
     cookiestr = co.getcookie()
@@ -163,5 +173,5 @@ def main(id="1"):
                 get_msnage(cookiestr, url2,kw["keyword"])
                 time.sleep(5)
 
-
+# main()
     # print(re1.text.encode("gbk","ignore").decode("gbk","ignore"))
