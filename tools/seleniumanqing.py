@@ -5,7 +5,7 @@
 
 import time
 import datetime
-import re
+import re,platform
 from selenium import webdriver
 from lxml import etree
 import requests
@@ -18,7 +18,11 @@ path1 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(path1)
 from tools.sqlconn import get_pool
 
-cert = 'cacert.pem'
+systeminfo = platform.platform()
+if "Windows" in systeminfo:
+    cert = 'cacert.pem'
+else:
+    cert = '/home/dfw/kerwin/flaskwebinter/fireinter/tools/cacert.pem'
 
 pool = get_pool()
 class COOKIE(object):
@@ -61,15 +65,16 @@ def get_msnage(cookiestr, url1,keyword):
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36",
         "Cookie": cookiestr,
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3',
-        'Accept-Encoding': 'gzip, deflate',
-        'Referer': 'http://www.baidu.com',
-        'Connection': 'keep-alive',
-        'Cache-Control': 'max-age=0',
-        'Host': None
+        'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
+        'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
+        'accept-encoding': 'gzip, deflate, br',
+        'Connection': 'close',
     }
+    # requests.adapters.DEFAULT_RETRIES = 5
+
     re1 = requests.get(url1, headers=headers,verify=cert)
+
+
     # re1.encoding = "utf-8"
     etem = etree.HTML(re1.text.replace('<?xml version="1.0" encoding="UTF-8"?>', ''))
     context = etem.xpath('//div[starts-with(@id, "M_")]')
@@ -170,7 +175,12 @@ def main(platformtypeid="1"):
             #     print(i)
                 url2 = url1.format(kw["keyword"],sf["nickname"],i)
                 print(url2)
-                get_msnage(cookiestr, url2,kw["keyword"])
+                try:
+                    get_msnage(cookiestr, url2,kw["keyword"])
+                except Exception as e:
+                    print(e)
+                    time.sleep(5)
+                    continue
                 time.sleep(5)
 
 # main()
