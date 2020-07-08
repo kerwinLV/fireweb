@@ -181,7 +181,8 @@ def main(platformtypeid="1"):
                     print(e)
                     time.sleep(5)
                     continue
-                time.sleep(5)
+                finally:
+                    time.sleep(5)
 
 # main()
     # print(re1.text.encode("gbk","ignore").decode("gbk","ignore"))
