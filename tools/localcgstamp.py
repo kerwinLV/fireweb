@@ -11,3 +11,23 @@ def localcgst(locatime):
     except Exception as e:
         return e
     return timeStamp
+
+
+def localcgst2(locatime):
+    try:
+        timeStruct = time.strptime(locatime, "%Y-%m-%d")
+            # 转换为时间戳:
+        timeStamp = int(time.mktime(timeStruct))
+    except Exception as e:
+        return e
+    return timeStamp
+
+
+def localcgst3(locatime):
+    try:
+        timeStruct = time.strptime(locatime, "%Y-%m-%d %H:%M")
+            # 转换为时间戳:
+        timeStamp = int(time.mktime(timeStruct))
+    except Exception as e:
+        return e
+    return timeStamp
