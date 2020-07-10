@@ -22,6 +22,15 @@ def localcgst2(locatime):
         return e
     return timeStamp
 
+def localcgst2_1(locatime):
+    try:
+        timeStruct = time.strptime(locatime, "%Y年%m月%d日")
+            # 转换为时间戳:
+        timeStamp = int(time.mktime(timeStruct))
+    except Exception as e:
+        return e
+    return timeStamp
+
 
 def localcgst3(locatime):
     try:
